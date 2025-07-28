@@ -10,11 +10,12 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
-import { Plus, Search, ListFilter as Filter, CreditCard as Edit3, Trash2 } from 'lucide-react-native';
+import { Plus, Search, ListFilter as Filter, CreditCard as Edit3, Trash2, BarChart3, Grid } from 'lucide-react-native';
 import { useDataStore } from '@/hooks/useDataStore';
 import { useTheme } from '@/components/ThemeContent';
 import { SubjectCard } from '@/components/SubjectCard';
 import { AddSubjectModal } from '@/components/AddSubjectModal';
+import { OverviewModal } from '@/components/OverviewModal';
 
 export default function SubjectsScreen() {
   const { subjects, addSubject, updateSubject, deleteSubject } = useDataStore();
@@ -23,6 +24,7 @@ export default function SubjectsScreen() {
   const [editingSubject, setEditingSubject] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterPriority, setFilterPriority] = useState<string>('all');
+  const [showOverview, setShowOverview] = useState(false);
 
   const filteredSubjects = subjects.filter(subject => {
     const matchesSearch = subject.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -78,7 +80,6 @@ export default function SubjectsScreen() {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#1a1a2e', '#16213e', '#0f3460']}
         colors={['#000000', '#111111', '#000000']}
         style={styles.background}
       />
@@ -86,12 +87,20 @@ export default function SubjectsScreen() {
       <View style={styles.header}>
         <BlurView intensity={20} style={styles.headerContent}>
           <Text style={styles.title}>Disciplinas e Tópicos</Text>
-          <TouchableOpacity
-            style={styles.addButton}
-            onPress={() => setShowAddModal(true)}
-          >
-            <Plus size={24} color="#fff" style={{ backgroundColor: theme.primary }} />
-          </TouchableOpacity>
+          <View style={styles.headerButtons}>
+            <TouchableOpacity
+              style={styles.headerButton}
+              onPress={() => setShowOverview(true)}
+            >
+              <Grid size={20} color="#fff" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => setShowAddModal(true)}
+            >
+              <Plus size={24} color="#fff" style={{ backgroundColor: theme.primary }} />
+            </TouchableOpacity>
+          </View>
         </BlurView>
 
         <BlurView intensity={15} style={styles.searchContainer}>
@@ -168,6 +177,12 @@ export default function SubjectsScreen() {
         }}
         onSave={handleAddSubject}
       />
+
+      <OverviewModal
+        visible={showOverview}
+        subjects={subjects}
+        onClose={() => setShowOverview(false)}
+      />
     </View>
   );
 }
@@ -204,6 +219,18 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#fff',
+  },
+  headerButtons: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  headerButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   addButton: {
     width: 48,

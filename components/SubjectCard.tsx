@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
-import { CreditCard as Edit3, Trash2, ChevronDown, ChevronUp } from 'lucide-react-native';
+import { CreditCard as Edit3, Trash2, ChevronDown, ChevronUp, BarChart3, Target } from 'lucide-react-native';
 
 interface SubjectCardProps {
   subject: any;
@@ -20,6 +20,17 @@ export function SubjectCard({ subject, onEdit, onDelete }: SubjectCardProps) {
   };
 
   const priorityColor = priorityColors[subject.priority];
+
+  // Calculate overall performance
+  const overallSuccessRate = subject.questionsAttempted > 0 
+    ? Math.round((subject.questionsCorrect / subject.questionsAttempted) * 100)
+    : 0;
+
+  const getPerformanceColor = (rate: number) => {
+    if (rate >= 70) return '#66BB6A';
+    if (rate >= 40) return '#FFA726';
+    return '#FF4757';
+  };
 
   return (
     <BlurView intensity={15} style={styles.card}>
@@ -40,6 +51,12 @@ export function SubjectCard({ subject, onEdit, onDelete }: SubjectCardProps) {
             <Text style={styles.subjectMeta}>
               {subject.topics.length} tópicos • prioridade {subject.priority}
             </Text>
+            <View style={styles.performanceRow}>
+              <BarChart3 size={14} color={getPerformanceColor(overallSuccessRate)} />
+              <Text style={[styles.performanceText, { color: getPerformanceColor(overallSuccessRate) }]}>
+                {overallSuccessRate}% sucesso • {subject.hoursStudied.toFixed(1)}h estudadas
+              </Text>
+            </View>
           </View>
         </View>
         
@@ -60,6 +77,20 @@ export function SubjectCard({ subject, onEdit, onDelete }: SubjectCardProps) {
 
       {isExpanded && (
         <View style={styles.content}>
+          <View style={styles.statsContainer}>
+            <View style={styles.statItem}>
+              <Target size={16} color="#66BB6A" />
+              <Text style={styles.statLabel}>Questões</Text>
+              <Text style={styles.statValue}>{subject.questionsCorrect}/{subject.questionsAttempted}</Text>
+            </View>
+            <View style={styles.statDivider} />
+            <View style={styles.statItem}>
+              <BarChart3 size={16} color="#42A5F5" />
+              <Text style={styles.statLabel}>Taxa de Sucesso</Text>
+              <Text style={styles.statValue}>{overallSuccessRate}%</Text>
+            </View>
+          </View>
+
           <Text style={styles.topicsTitle}>Tópicos:</Text>
           <View style={styles.topicsGrid}>
             {subject.topics.map((topic: any) => (
@@ -116,6 +147,16 @@ const styles = StyleSheet.create({
   subjectMeta: {
     fontSize: 14,
     color: 'rgba(255, 255, 255, 0.6)',
+    marginBottom: 4,
+  },
+  performanceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  performanceText: {
+    fontSize: 12,
+    fontWeight: '600',
+    marginLeft: 4,
   },
   headerRight: {
     flexDirection: 'row',
@@ -136,12 +177,36 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: 'rgba(255, 255, 255, 0.1)',
   },
+  statsContainer: {
+    flexDirection: 'row',
+    paddingTop: 16,
+    marginBottom: 16,
+  },
+  statItem: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  statLabel: {
+    fontSize: 12,
+    color: 'rgba(255, 255, 255, 0.6)',
+    marginTop: 8,
+    marginBottom: 4,
+  },
+  statValue: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  statDivider: {
+    width: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    marginHorizontal: 20,
+  },
   topicsTitle: {
     fontSize: 14,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.8)',
     marginBottom: 12,
-    marginTop: 16,
   },
   topicsGrid: {
     flexDirection: 'row',
