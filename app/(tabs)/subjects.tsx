@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
-import { Plus, Search, ListFilter as Filter, CreditCard as Edit3, Trash2, BarChart3, Grid } from 'lucide-react-native';
+import { Plus, Search, ListFilter as Filter, CreditCard as Edit3, Trash2, ChartBar as BarChart3, Grid2x2 as Grid } from 'lucide-react-native';
 import { useDataStore } from '@/hooks/useDataStore';
 import { useTheme } from '@/components/ThemeContent';
 import { SubjectCard } from '@/components/SubjectCard';

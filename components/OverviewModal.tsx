@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
-import { X, Settings, Grid, BarChart3 } from 'lucide-react-native';
+import { X, Settings, Grid2x2 as Grid, ChartBar as BarChart3 } from 'lucide-react-native';
 import { useTheme } from '@/components/ThemeContent';
 
 interface OverviewModalProps {

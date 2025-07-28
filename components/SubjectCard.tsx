@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
-import { CreditCard as Edit3, Trash2, ChevronDown, ChevronUp, BarChart3, Target } from 'lucide-react-native';
+import { CreditCard as Edit3, Trash2, ChevronDown, ChevronUp, ChartBar as BarChart3, Target } from 'lucide-react-native';
 
 interface SubjectCardProps {
   subject: any;
